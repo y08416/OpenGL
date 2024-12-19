@@ -1,0 +1,36 @@
+CC	= gcc
+CFLAGS  = -O2 -Wall
+
+LDFLAGS :=
+ifeq "$(shell uname -s)" "Linux"
+LDFLAGS += -L/usr/X11R6/lib -lm -lX11 -lGL -lGLU -lglut -lXext -lXmu -lXi
+else
+ifeq "$(findstring CYGWIN,$(shell uname -s))" "CYGWIN"
+LDFLAGS += -lm -lglut32 -lglu32 -lopengl32
+else
+ifeq "$(shell uname -s)" "Darwin"
+LDFLAGS = -framework OpenGL -framework GLUT -framework Foundation -Wno-deprecated
+endif
+endif
+endif
+
+.c.o:
+	CC -c $@<
+
+ifeq "$(shell uname -s)" "Linux"
+clean:
+	@rm -f *.o sample? samle?? sampe?-? kadai? kadai?? kadai?-?
+else
+ifeq "$(findstring CYGWIN,$(shell uname -s))" "CYGWIN"
+clean:
+	@rm -f *.o *.exe
+else
+ifeq "$(shell uname -s)" "Darwin"
+clean:
+	@rm -f *.o sample? sample?? sampe?-? kadai? kadai?? kadai?-?
+endif
+endif
+endif
+
+cleanall: clean
+	@rm -f *~ *.*~ *.*.*~

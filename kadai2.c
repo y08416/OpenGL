@@ -1,0 +1,45 @@
+/* kadai2.c */
+#include <GL/glut.h>
+#include <math.h>
+
+#define PI 3.14159265
+
+void display(void)
+{
+    int n = 10;             /* 分割数 */
+    float r = 0.5;           /* 半径 */
+    float theta;
+    
+    glClear(GL_COLOR_BUFFER_BIT);
+    glColor3f(1.0, 1.0, 1.0); /* 描画する図形の色を白に指定 */
+    
+    glBegin(GL_TRIANGLE_FAN);  /* 円を描画 */
+    glVertex3f(0.0, 0.0, 0.0); /* 中心点 */
+    
+    for (int i = 0; i <= n; i++) {
+        theta = 2.0 * PI * (float)i / (float)n;
+        glVertex3f(r * cos(theta), r * sin(theta), 0.0);
+    }
+    
+    glEnd();
+    glFlush();                /* OpenGL コマンドを強制的に実行（描画実行）*/
+}
+
+void init(char *winname)
+{
+    glutInitWindowPosition(0, 0);    /* ウィンドウの左上の位置を(0,0)とする */
+    glutInitWindowSize(500, 500);    /* ウィンドウのサイズを500×500ドットとする */
+    glutInitDisplayMode(GLUT_RGBA);  /* 色の指定にRGBAモードを用いる */
+    glutCreateWindow(winname);       /* winnameで指定された名前でウィンドウを開く */
+
+    glClearColor(0.0, 0.0, 0.0, 1.0);/* ウィンドウの背景色の指定 */
+}
+
+int main(int argc, char *argv[])
+{
+    glutInit(&argc, argv);           /* glutの初期化 */
+    init(argv[0]);
+    glutDisplayFunc(display);        /* ディスプレイコールバック関数の指定 */
+    glutMainLoop();                  /* イベント待ちの無限ループへ入る */
+    return 0;                        /* ループが終わったら0を返して終了 */
+}
